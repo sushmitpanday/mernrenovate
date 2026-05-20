@@ -8,7 +8,7 @@ const app = express();
 // --- 🛠️ CHANGED: Puraane app.use(cors()) ko hata kar yeh lagayein ---
 // Isse aapka Vercel frontend aur Render backend aapas me sahi se baat kar payenge
 app.use(cors({
-    origin: ["https://mernrenovate.vercel.app", "http://localhost:5173", "http://localhost:3000"],
+    origin: ["https://mernrenovate-wd66.vercel.app", "http://localhost:5173", "http://localhost:3000"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"]
 }));

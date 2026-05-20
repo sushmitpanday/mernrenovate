@@ -5,9 +5,9 @@ const connectDB = require("./config/db");
 
 const app = express();
 
-// CORS: Sirf tumhare Vercel frontend ko access de raha hai
+// CORS: Sabhi origins allow kiye hain
 app.use(cors({
-    origin: ["https://mernrenovate-wd66.vercel.app", "http://localhost:5173", "http://localhost:3000"],
+    origin: "*",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"]
 }));
@@ -25,7 +25,13 @@ app.get("/", (req, res) => {
     res.send("SilverBricks Connect API is running...");
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-});
+// 🚀 Vercel aur Local dono ke liye logic
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`🚀 Local Server running on port ${PORT}`);
+    });
+}
+
+// Vercel ke liye export
+module.exports = app;

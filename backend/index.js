@@ -1,20 +1,26 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const connectDB = require("./config/db"); // 1. db.js import waise hi hai
+const connectDB = require("./config/db");
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// --- 🛠️ CHANGED: Puraane app.use(cors()) ko hata kar yeh lagayein ---
+// Isse aapka Vercel frontend aur Render backend aapas me sahi se baat kar payenge
+app.use(cors({
+    origin: ["https://mernrenovate.vercel.app", "http://localhost:5173", "http://localhost:3000"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
+}));
+
 app.use(express.json());
 
 // --- DATABASE CONNECTION ---
-connectDB(); // 2. Database connection call
+connectDB();
 
 // --- ROUTES SETUP ---
-const userRoutes = require("./routes/userRoutes"); // Aapki file name ke mutabik
-app.use("/api/users", userRoutes); // Ab aapke routes "/api/users/register" aur "/api/users/login" banenge
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/users", userRoutes);
 
 // Root Router Test ke liye
 app.get("/", (req, res) => {

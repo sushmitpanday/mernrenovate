@@ -8,7 +8,7 @@ export default function Header() {
   // 🛠️ CHANGED: Header me bhi local aur live render URL ka environment check lagaya hai
   const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
-    : "https://shining-12.onrender.com";
+    : "https://mernrenovate.onrender.com";
 
   // Check karo user logged in hai ya nahi jab page load ho
   useEffect(() => {

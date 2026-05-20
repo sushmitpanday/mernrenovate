@@ -16,7 +16,7 @@ export default function RegisterPage() {
   // 🛠️ CHANGED: Register page par bhi localhost aur render link manage karne ka logic add kiya hai
   const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
-    : "https://mernrenovate.onrender.com";
+    : "https://mernrenovate-1.onrender.com";
 
   async function handleSubmit(e) {
     e.preventDefault();

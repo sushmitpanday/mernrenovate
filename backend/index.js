@@ -25,13 +25,8 @@ app.get("/", (req, res) => {
     res.send("SilverBricks Connect API is running...");
 });
 
-// 🚀 Vercel aur Local dono ke liye logic
-if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`🚀 Local Server running on port ${PORT}`);
-    });
-}
-
-// Vercel ke liye export
-module.exports = app;
+// 🚀 Render ke liye: Ye hamesha chalega
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});

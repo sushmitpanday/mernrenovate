@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function LoginPage() {
@@ -7,6 +7,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   // 🛠️ CHANGED: Admin dashboard ki tarah yahan local aur live render URL ka logic add kiya hai
   const API_BASE_URL = window.location.hostname === "localhost" 
@@ -31,17 +33,16 @@ export default function LoginPage() {
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
-      
+      window.dispatchEvent(new Event("auth-changed"))
+
       const roleRedirects = {
         customer: "/dashboard/customer",
         business: "/dashboard/business"
       };
       
-      // Sahi dashboard par redirect karo tabhi refresh hoga layout
+    // Sahi dashboard par redirect karo tabhi refresh hoga layout
       const targetRoute = roleRedirects[data.user.role] || "/";
-      
-      // 🛠️ CHANGED: navigate() ki jagah window.location.href kiya taaki header naya token read kare aur dashboard load hote hi logout na kare
-      window.location.href = targetRoute; 
+      navigate (targetRoute)
 
     } catch (err) {
       if (err.response?.status === 404 || err.response?.status === 400) {

@@ -16,6 +16,7 @@
     "date-fns": "^4.2.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-google-places-autocomplete": "^4.1.0",
     "react-router-dom": "^7.15.1",
     "tailwindcss": "^4.3.0"
   },

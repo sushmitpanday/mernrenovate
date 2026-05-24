@@ -8,7 +8,7 @@ export default function Header() {
 
   const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
-    : "https://mernrenovate-5.onrender.com";
+    : "https://mernrenovate-6.onrender.com";
 
   const fetchUserData = useCallback(() => {
     const token = localStorage.getItem("token");

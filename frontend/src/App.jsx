@@ -6,49 +6,41 @@ import Jobs from './components/Jobs'
 import Footer from './components/Footer'
 import LoginPage from './pages/Login'
 import RegisterPage from './pages/Register'
-
-// Teeno nayi files ko yahan import kiya hai (Aap apne folder structure ke hisab se path check kar lena)
+import GetStarted from './pages/GetStarted'
 import BusinessDashboard from './pages/BuisnessDashboard'
 import CustomerDashboard from './pages/CustomerDashboard'
 import CustomerBookingsPage from './pages/CustomerBooking'
 
-// Ek Home component jo main sections ko hold karega
-function Home() {
+// Layout component jo Header aur Footer ke saath pages dikhayega
+function MainLayout({ children }) {
   return (
-    <>
-      <Hero />
-      <Jobs />
-    </>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Header />
+      <main className="flex-grow">{children}</main>
+      <Footer />
+    </div>
   )
+}
+
+function Home() {
+  return <><Hero /><Jobs /></>
 }
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-gray-50">
-        {/* Header har page par dikhega */}
-        <Header /> 
+      <Routes>
+        {/* Pages with Header & Footer */}
+        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/login" element={<MainLayout><LoginPage /></MainLayout>} />
+        <Route path="/register" element={<MainLayout><RegisterPage /></MainLayout>} />
+        <Route path="/dashboard/business" element={<MainLayout><BusinessDashboard /></MainLayout>} />
+        <Route path="/dashboard/customer" element={<MainLayout><CustomerDashboard /></MainLayout>} />
+        <Route path="/dashboard/customer/bookings" element={<MainLayout><CustomerBookingsPage /></MainLayout>} />
 
-        {/* Main content area jisme pages switch honge */}
-        <main className="flex-grow">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            
-            {/* Business Dashboard Route */}
-            <Route path="/dashboard/business" element={<BusinessDashboard />} />
-            
-            {/* Customer Dashboard Routes */}
-            <Route path="/dashboard/customer" element={<CustomerDashboard />} />
-            <Route path="/dashboard/customer/bookings" element={<CustomerBookingsPage />} />
-          </Routes>
-        </main>
-
-        {/* Footer har page par dikhega */}
-        <Footer />
-      </div>
+        {/* Full screen page without Header & Footer */}
+        <Route path="/get-started" element={<GetStarted />} />
+      </Routes>
     </Router>
   )
 }

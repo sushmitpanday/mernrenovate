@@ -1,66 +1,98 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+// import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="border-t border-gray-200 bg-gray-50 px-4 py-12 text-sm text-gray-600">
-      <div className="mx-auto max-w-7xl">
+    <footer className="font-sans">
+      {/* 1. ORANGE CTA SECTION */}
+      <div className="bg-[#bc3908] text-white py-16 px-6 md:px-20 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="max-w-2xl">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+            Got a job? Get matched with the right crew in minutes.
+          </h2>
+          <p className="text-lg opacity-90">
+            Whether it's an emergency repair or a full home renovation — find verified Australian tradies and teams, secured by escrow.
+          </p>
+        </div>
         
-        {/* Main Grid Content */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4 pb-8 border-b border-gray-200">
+        <div className="flex flex-col gap-4 w-full md:w-80">
+          <button className="bg-white text-[#bc3908] py-4 px-6 rounded-md font-bold text-sm uppercase tracking-wider hover:bg-gray-100 transition-colors">
+            Post a Job — It's Free →
+          </button>
+          <button className="border border-white text-white py-4 px-6 rounded-md font-bold text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
+            I'm a Tradie — Join Free
+          </button>
+        </div>
+      </div>
+
+      {/* 2. MAIN BLUE FOOTER */}
+      <div className="bg-[#0a1d37] text-white pt-16 pb-8 px-6 md:px-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-12 mb-16">
           
-          {/* Column 1: Brand Info */}
-          <div className="space-y-3">
-            <Link to="/" className="text-xl font-bold text-blue-600 tracking-tight">
-              SilverBricks Connect
-            </Link>
-            <p className="text-gray-500 text-xs leading-relaxed max-w-xs">
-              Australia's premium all-in-one services marketplace connecting top-tier verified tradies with property owners.
+          {/* Logo & Info */}
+          <div className="col-span-1 md:col-span-1">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="bg-white p-1 rounded">
+                <div className="w-6 h-6 bg-[#0a1d37]"></div> {/* Placeholder for Logo Icon */}
+              </div>
+              <div>
+                <h3 className="font-bold text-xl leading-none">SilverBricks</h3>
+                <span className="text-[10px] uppercase tracking-widest opacity-60">Australia</span>
+              </div>
+            </div>
+            <p className="text-sm opacity-70 leading-relaxed mb-8">
+              Australia's smartest marketplace for trades, teams, and talent. Verified providers, escrow payments, AI-powered matching.
             </p>
+            <div className="space-y-3">
+              <button className="flex items-center gap-3 bg-[#1e2e45] w-full p-2 rounded-lg border border-white/10 hover:bg-[#253954]">
+                <div className="w-8 h-8 bg-white/10 rounded flex items-center justify-center"></div>
+                <div className="text-left"><p className="text-[10px] opacity-60 leading-none">Download on the</p><p className="text-sm font-semibold">App Store</p></div>
+              </button>
+              <button className="flex items-center gap-3 bg-[#1e2e45] w-full p-2 rounded-lg border border-white/10 hover:bg-[#253954]">
+                <div className="w-8 h-8 bg-white/10 rounded flex items-center justify-center">▶</div>
+                <div className="text-left"><p className="text-[10px] opacity-60 leading-none">Get it on</p><p className="text-sm font-semibold">Google Play</p></div>
+              </button>
+            </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-3">Company</h4>
-            <ul className="space-y-2 text-xs">
-              <li><Link to="/about" className="text-gray-500 hover:text-blue-600 transition-colors">About Us</Link></li>
-              <li><Link to="/contact" className="text-gray-500 hover:text-blue-600 transition-colors">Contact Us</Link></li>
-              <li><Link to="/careers" className="text-gray-500 hover:text-blue-600 transition-colors">Careers</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 3: Marketplaces */}
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-3">Explore</h4>
-            <ul className="space-y-2 text-xs">
-              <li><Link to="/trades" className="text-gray-500 hover:text-blue-600 transition-colors">Find a Tradie</Link></li>
-              <li><Link to="/hire" className="text-gray-500 hover:text-blue-600 transition-colors">Hire Now</Link></li>
-              <li><Link to="/book" className="text-gray-500 hover:text-blue-600 transition-colors">Book Easy Hub</Link></li>
-              <li><Link to="/jobs" className="text-gray-500 hover:text-blue-600 transition-colors">Active Jobs</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 4: Legal & Policy */}
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-3">Legal</h4>
-            <ul className="space-y-2 text-xs">
-              <li><Link to="/privacy" className="text-gray-500 hover:text-blue-600 transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-gray-500 hover:text-blue-600 transition-colors">Terms of Service</Link></li>
-              <li><Link to="/cookies" className="text-gray-500 hover:text-blue-600 transition-colors">Cookie Settings</Link></li>
-            </ul>
-          </div>
-
+          {/* Links Sections */}
+          {[
+            { title: "For Customers", links: ["Post a Job", "Browse Tradies", "Find a Team", "Categories", "How It Works", "Customer App"] },
+            { title: "For Providers", links: ["Join as a Tradie", "Join as a Team", "Membership Plans", "Lead Marketplace", "Verification", "Provider App"] },
+            { title: "Company", links: ["About Us", "For Business", "Franchise Opportunities", "Blog & Resources", "Press", "Careers"] },
+            { title: "Support", links: ["Help Centre", "Contact Us", "Trust & Safety", "Dispute Resolution", "Insurance", "Report an Issue"] }
+          ].map((section) => (
+            <div key={section.title}>
+              <h4 className="font-bold mb-6 text-sm uppercase tracking-wider">{section.title}</h4>
+              <ul className="space-y-4 text-sm opacity-70">
+                {section.links.map(link => (
+                  <li key={link} className="hover:opacity-100 cursor-pointer transition-opacity">{link}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Bottom Section: Copyright */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400 gap-4">
-          <p>© 2026 SilverBricks Connect Pty Ltd. All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-wrap justify-center gap-4 text-xs opacity-60">
+            <span>© 2026 SilverBricks Pty Ltd</span>
+            <span>•</span>
+            <span>ABN 12 345 678 901</span>
+            <span>•</span>
+            <span>Made in Australia 🇦🇺</span>
+            <span className="hover:opacity-100 cursor-pointer ml-4">Privacy</span>
+            <span className="hover:opacity-100 cursor-pointer">Terms</span>
+            <span className="hover:opacity-100 cursor-pointer">Cookies</span>
+          </div>
+          
           <div className="flex gap-4">
-            <span className="hover:text-blue-600 cursor-pointer">🇦🇺 Built for Australia</span>
+
           </div>
         </div>
-
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

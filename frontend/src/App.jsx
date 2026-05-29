@@ -1,21 +1,23 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import TopHeader from './components/TopHeader' 
 import Header from './components/Header'
 import Hero from './components/Hero'
+import CategorySection from './components/AboutUs' 
 import Jobs from './components/Jobs'
 import Footer from './components/Footer'
-import LoginPage from './pages/Login'
-import RegisterPage from './pages/Register'
 import GetStarted from './pages/GetStarted'
-import BusinessDashboard from './pages/BuisnessDashboard'
+import QuickJobFlow from './pages/QuickJobFlow' 
+import BusinessDashboard from './pages/BuisnessDashboard' // Note: Check spelling 'Buisness' vs 'Business' in your file name
 import CustomerDashboard from './pages/CustomerDashboard'
-import CustomerBookingsPage from './pages/CustomerBooking'
+import TradieDashboard from './pages/TradieDashboard' // <-- 1. Tradie Dashboard Imported
+import LoginPage from './pages/LoginPage'
 
-// Layout component jo Header aur Footer ke saath pages dikhayega
 function MainLayout({ children }) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
+      <TopHeader /> 
+      <Header /> 
       <main className="flex-grow">{children}</main>
       <Footer />
     </div>
@@ -23,26 +25,36 @@ function MainLayout({ children }) {
 }
 
 function Home() {
-  return <><Hero /><Jobs /></>
+  return (
+    <>
+      <Hero />
+      <Jobs />
+      <CategorySection />
+    </>
+  )
 }
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Pages with Header & Footer */}
+        {/* Landing Page */}
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
-        <Route path="/login" element={<MainLayout><LoginPage /></MainLayout>} />
-        <Route path="/register" element={<MainLayout><RegisterPage /></MainLayout>} />
+        
+        {/* Login Page (Full Screen Glassmorphic View) */}
+        <Route path="/login" element={<LoginPage />} />
+        
+        {/* Dashboards Layer with Standard Layout Header/Footer */}
         <Route path="/dashboard/business" element={<MainLayout><BusinessDashboard /></MainLayout>} />
         <Route path="/dashboard/customer" element={<MainLayout><CustomerDashboard /></MainLayout>} />
-        <Route path="/dashboard/customer/bookings" element={<MainLayout><CustomerBookingsPage /></MainLayout>} />
+        <Route path="/dashboard/tradie" element={<MainLayout><TradieDashboard /></MainLayout>} /> {/* <-- 2. Tradie Route Added Successfully */}
 
-        {/* Full screen page without Header & Footer */}
+        {/* Full screen onboarding/flow pages */}
         <Route path="/get-started" element={<GetStarted />} />
+        <Route path="/quick-start" element={<QuickJobFlow />} /> 
       </Routes>
     </Router>
   )
 }
 
-export default App
+export default App;

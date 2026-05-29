@@ -1,26 +1,28 @@
-// middleware/authMiddleware.js
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const protect = (req, res, next) => {
     let token;
 
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         try {
-            token = req.headers.authorization.split(' ')[1];
+            // Header se token nikaalo (Bearer <token>)
+            token = req.headers.authorization.split(" ")[1];
 
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
+            // Token verify karo
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || "silverbricks_secret_key");
 
-            // Request me id aur role attach kar rahe hain
-            req.user = { id: decoded.id, role: decoded.role };
+            // Request object mein decoded userId attach karo taaki controllers use kar sakein
+            req.userId = decoded.userId;
 
             next();
         } catch (error) {
-            return res.status(401).json({ message: 'Not authorized, token failed' });
+            console.error("❌ Token verification failed:", error.message);
+            return res.status(401).json({ success: false, message: "Not authorized, token failed" });
         }
     }
 
     if (!token) {
-        return res.status(401).json({ message: 'Not authorized, no token' });
+        return res.status(401).json({ success: false, message: "Not authorized, no token found" });
     }
 };
 

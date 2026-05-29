@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
-    : "https://mernrenovate-6.onrender.com";
+    : "https://mernrenovate-7.onrender.com";
 
   async function handleSendOTP(e) {
     e.preventDefault();

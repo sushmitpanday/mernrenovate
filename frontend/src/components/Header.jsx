@@ -9,27 +9,43 @@ export default function Header() {
   const [user, setUser] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // API Base URL Setup
+  const API_BASE_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:5000" 
+    : "https://mernrenovate-7.onrender.com";
+
   // 🔄 Auth status listen karne ke liye useEffect lagaya
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          // Token se basic verification ya login state check (Aap JWT decode bhi kar sakte hain)
+ // useEffect ke andar update karein:
+useEffect(() => {
+  const checkAuth = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        // Sirf local storage check karne ke bajaye server se verify karein
+        const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
+          headers: { "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}
+            ` }
+        });
+        if (res.ok) {
           setUser({ loggedIn: true });
-        } catch (e) {
+        } else {
+          localStorage.removeItem("token");
           setUser(null);
         }
-      } else {
+      } catch (e) {
+        console.error("Auth check error:", e);
         setUser(null);
       }
-    };
+    } else {
+      setUser(null);
+    }
+  };
 
-    checkAuth();
-    // Custom event listener taaki login/logout hote hi header turant update ho
-    window.addEventListener("auth-changed", checkAuth);
-    return () => window.removeEventListener("auth-changed", checkAuth);
-  }, []);
+  checkAuth();
+  window.addEventListener("auth-changed", checkAuth);
+  return () => window.removeEventListener("auth-changed", checkAuth);
+}, [API_BASE_URL]); // Ab API_BASE_URL use ho gaya
 
   const handleLogout = () => {
     localStorage.removeItem("token");

@@ -67,7 +67,7 @@ function App() {
 
 
         {/* Protected Dashboard Routes */}
-        <Route path="/dashboard/business" element={
+        <Route path="/dashboard/owner" element={
           <ProtectedRoute allowedRole="owner">
             <MainLayout><BusinessDashboard /></MainLayout>
           </ProtectedRoute>

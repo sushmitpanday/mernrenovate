@@ -31,6 +31,7 @@ connectDB();
 const userRoutes = require("./routes/userRoutes");
 app.use("/api", userRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use('/api/profile', require('./routes/personaldocument'));
 
 app.get("/", (req, res) => {
     res.send("SilverBricks Connect API is running...");

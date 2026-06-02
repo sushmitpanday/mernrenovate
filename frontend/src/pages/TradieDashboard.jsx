@@ -1,21 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const TradieDashboard = () => {
-    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const [view, setView] = useState('profile'); // 'profile' या 'bookings'
+    const [formData, setFormData] = useState({ firstName: '', specialization: '', phone: '' });
+
+    const handleUpdate = async () => {
+        await axios.post('/api/profile/update', formData, { headers: { Authorization: localStorage.getItem('token') }});
+        alert("Updated!");
+    };
 
     return (
-        <div className="p-8 bg-gray-50 min-h-screen">
-            <h1 className="text-3xl font-bold text-gray-800">Tradie Portal: {user.name}</h1>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-6 bg-white rounded-xl shadow-md">
-                    <h3 className="font-bold text-gray-500">Specialization</h3>
-                    <p className="text-xl font-bold text-blue-600">{user.specialization || 'Not Set'}</p>
-                </div>
-                <div className="p-6 bg-white rounded-xl shadow-md">
-                    <h3 className="font-bold text-gray-500">Verification</h3>
-                    <p className="text-xl font-bold text-green-600">Documents Uploaded</p>
-                </div>
+        <div className="p-8">
+            <div className="flex gap-4 mb-6">
+                <button onClick={() => setView('profile')} className="p-3 bg-blue-500 text-white rounded">Edit Profile</button>
+                <button onClick={() => setView('bookings')} className="p-3 bg-green-500 text-white rounded">View Bookings</button>
             </div>
+
+            {view === 'profile' ? (
+                <div className="bg-white p-6 shadow-lg rounded-xl">
+                    <h2 className="text-xl font-bold mb-4">Complete Your Profile</h2>
+                    <input className="w-full border p-2 mb-3" placeholder="First Name" onChange={(e) => setFormData({...formData, firstName: e.target.value})} />
+                    <input className="w-full border p-2 mb-3" placeholder="Specialization" onChange={(e) => setFormData({...formData, specialization: e.target.value})} />
+                    <button onClick={handleUpdate} className="bg-orange-500 text-white p-2 rounded">Save Details</button>
+                </div>
+            ) : (
+                <div className="bg-white p-6 shadow-lg rounded-xl">
+                    <h2 className="text-xl font-bold mb-4">Available Jobs</h2>
+                    {/* यहाँ API से आई हुई bookings को Map करें */}
+                </div>
+            )}
         </div>
     );
 };

@@ -14,13 +14,15 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 // 2. Middleware
+// index.js में ये वाला cors इस्तेमाल करें (सबसे आसान तरीका)
 app.use(cors({
-    origin: true,
-    credentials: true,
+    origin: "*", // यह किसी भी वेबसाइट से रिक्वेस्ट को अलाउ करेगा
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-rtb-fingerprint-id"],
-    exposedHeaders: ["x-rtb-fingerprint-id"]
+
 }));
+
+app.options('*', cors());
 
 app.use(express.json());
 

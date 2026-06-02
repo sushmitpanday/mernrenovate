@@ -1,16 +1,20 @@
 // utils/emailService.js
 const nodemailer = require('nodemailer');
 
-// ट्रांसपोर्टर को बाहर रखें (यह बार-बार नहीं बनेगा)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com', // service: 'gmail' की जगह यह बेहतर है
+    port: 587, // 587 पोर्ट रेंडर के लिए बेस्ट है
+    secure: false, // 587 के लिए false जरूरी है
     auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS // सुनिश्चित करें कि यहाँ 16 अंकों का App Password ही है
+        pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false // रेंडर के लिए यह लाइन जादुई है
     }
 });
 
-const sendOTPEmail = async(toEmail, otp) => { // async जोड़ें
+const sendOTPEmail = async(toEmail, otp) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: toEmail,
@@ -22,7 +26,7 @@ const sendOTPEmail = async(toEmail, otp) => { // async जोड़ें
         const info = await transporter.sendMail(mailOptions);
         return { success: true, info };
     } catch (error) {
-        console.error("Nodemailer Error:", error); // रेंडर लॉग्स में असली एरर यहाँ दिखेगा
+        console.error("Nodemailer Error:", error);
         throw error;
     }
 };

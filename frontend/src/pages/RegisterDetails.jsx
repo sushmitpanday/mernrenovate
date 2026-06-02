@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const api = axios.create({ baseURL: 'http://localhost:5000' });
+const API_BASE_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:5000" 
+    : "https://mernrenovate-9.onrender.com";
+
+const api = axios.create({ baseURL: API_BASE_URL });
 
 const RegisterDetails = () => {
     const location = useLocation();

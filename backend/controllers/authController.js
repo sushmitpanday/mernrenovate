@@ -6,10 +6,21 @@ exports.sendOTP = async(req, res) => {
     try {
         const { email } = req.body;
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // आपका मौजूदा लॉजिक: इसमें कोई छेड़छाड़ नहीं की गई है
         await OTP.findOneAndUpdate({ email }, { otp, expiresAt: new Date(Date.now() + 5 * 60 * 1000) }, { upsert: true, new: true });
-        await sendOTPEmail(email, otp);
+
+        // ईमेल भेजने के लिए timeout का इस्तेमाल ताकि सर्वर पेंडिंग में न रहे
+        const emailPromise = sendOTPEmail(email, otp);
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Email service timed out")), 8000)
+        );
+
+        await Promise.race([emailPromise, timeoutPromise]);
+
         res.status(200).json({ success: true, message: "OTP sent successfully" });
     } catch (error) {
+        console.error("OTP Error:", error); // रेंडर के लॉग्स में चेक करने के लिए
         res.status(500).json({ success: false, message: error.message });
     }
 };

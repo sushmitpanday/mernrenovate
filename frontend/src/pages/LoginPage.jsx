@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = window.location.hostname === "localhost" 
-    ? "http://localhost:5000" 
-    : "https://mernrenovate-11.onrender.com";
-
-// यहाँ से withCredentials हटा दिया गया है
-const api = axios.create({ baseURL: API_BASE_URL });
-
-// अब नीचे functions में 'api' का इस्तेमाल करें, यह अपने आप सही URL ले लेगा
+const api = axios.create({ baseURL: 'http://localhost:5000', withCredentials: true });
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');

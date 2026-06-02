@@ -1,63 +1,43 @@
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const twilio = require("twilio");
+const User = require('../models/User');
+const OTP = require('../models/OTP');
+const { sendOTPEmail } = require('../utils/emailService');
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const serviceSid = process.env.TWILIO_SERVICE_SID;
-
-const sendOTP = async(req, res) => {
+exports.sendOTP = async(req, res) => {
     try {
-        const { phone } = req.body;
-        const formattedPhone = phone.startsWith('+') ? phone : `+91${phone}`;
-
-        // Verify API se OTP bhejna
-        await client.verify.v2.services(serviceSid).verifications.create({
-            to: formattedPhone,
-            channel: 'sms'
-        });
-
-        return res.status(200).json({ success: true, message: "OTP sent" });
+        const { email } = req.body;
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await OTP.findOneAndUpdate({ email }, { otp, expiresAt: new Date(Date.now() + 5 * 60 * 1000) }, { upsert: true, new: true });
+        await sendOTPEmail(email, otp);
+        res.status(200).json({ success: true, message: "OTP sent successfully" });
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
-
-const verifyOTP = async(req, res) => {
+exports.verifyOTP = async(req, res) => {
     try {
-        const { phone, otp } = req.body;
-        const formattedPhone = phone.startsWith('+') ? phone : `+91${phone}`;
+        const { email, otp } = req.body;
 
-        // Verify API se check karna
-        const check = await client.verify.v2.services(serviceSid).verificationChecks.create({
-            to: formattedPhone,
-            code: otp
-        });
+        const otpRecord = await OTP.findOne({ email, otp });
+        if (!otpRecord) return res.status(400).json({ success: false, message: "Invalid OTP" });
+        if (new Date() > otpRecord.expiresAt) return res.status(400).json({ success: false, message: "OTP expired" });
 
-        if (check.status !== 'approved') return res.status(400).json({ success: false, message: "Invalid OTP" });
+        await OTP.deleteOne({ email });
 
-        let user = await User.findOne({ phone });
-        if (!user) user = await User.create({ phone, isVerified: true });
-        else { user.isVerified = true;
-            await user.save(); }
+        let user = await User.findOne({ email });
 
-        const token = jwt.sign({ userId: user._id, role: user.role || 'customer' }, process.env.JWT_SECRET);
-        return res.status(200).json({ success: true, token, role: user.role, isNewUser: !user.name });
+        // LOGIC FIX:
+        // 1. Agar user exist hi nahi karta -> Naya user
+        // 2. Agar user exist karta hai lekin isProfileCompleted true nahi hai -> Incomplete profile (Registration bhejो)
+        if (!user || user.isProfileCompleted !== true) {
+            if (!user) {
+                user = await User.create({ email, isProfileCompleted: false });
+            }
+            return res.status(200).json({ success: true, isNewUser: true, message: "Complete profile" });
+        }
+
+        // Agar user exist karta hai aur profile complete hai
+        return res.status(200).json({ success: true, isNewUser: false, user, message: "Login successful" });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Verification failed" });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
-
-const completeOnboarding = async(req, res) => {
-    try {
-        const { name, email, role } = req.body;
-        const user = await User.findById(req.userId);
-        if (!user) return res.status(404).json({ message: "User not found" });
-        user.name = name;
-        user.email = email;
-        user.role = role;
-        await user.save();
-        res.status(200).json({ success: true, role: user.role });
-    } catch (error) { res.status(500).json({ message: "Error" }); }
-};
-
-module.exports = { sendOTP, verifyOTP, completeOnboarding };

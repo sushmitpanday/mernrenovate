@@ -1,21 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, default: "" },
-    email: { type: String, unique: true, sparse: true },
-    password: { type: String }, // Kuch user direct login ke liye use kar sakte hain
-    phone: { type: String, unique: true, sparse: true },
+    // Basic Details (Sabke liye)
+    email: { type: String, required: true, unique: true },
+    name: { type: String },
+    phone: { type: String },
+    location: { type: String },
+    role: { type: String, enum: ['customer', 'tradie', 'owner'], default: 'customer' },
+    isProfileCompleted: { type: Boolean, default: false },
 
-    // 🛠️ Role Selection State (Tum Kaun Ho Logic)
-    role: {
-        type: String,
-        enum: ["customer", "tradie", "business_owner", "admin"],
-        default: "customer"
-    },
+    // Professional Details (Conditional)
+    // Tradie ke liye
+    specialization: { type: String },
 
-    isVerified: { type: Boolean, default: false },
-    otp: { type: String, default: null },
-    otpExpires: { type: Date, default: null }
-}, { timestamps: true });
+    // Business Owner ke liye
+    businessName: { type: String },
+    teamSize: { type: String },
 
-module.exports = mongoose.model("User", userSchema);
+    // Documents (Dono ke liye)
+    documentPath: { type: String },
+
+    // Timestamp
+    createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('User', userSchema);

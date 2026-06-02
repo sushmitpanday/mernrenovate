@@ -17,11 +17,10 @@ if (!fs.existsSync(uploadsDir)) {
 
 // 2. Middleware
 app.use(cors({
-    origin: true,
-    credentials: true,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-rtb-fingerprint-id"],
-    exposedHeaders: ["x-rtb-fingerprint-id"]
+
 }));
 
 app.use(express.json());

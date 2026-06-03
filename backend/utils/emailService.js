@@ -1,32 +1,28 @@
 // utils/emailService.js
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com', // service: 'gmail' की जगह यह बेहतर है
-    port: 587, // 587 पोर्ट रेंडर के लिए बेस्ट है
-    secure: false, // 587 के लिए false जरूरी है
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    tls: {
-        rejectUnauthorized: false // रेंडर के लिए यह लाइन जादुई है
-    }
-});
+const axios = require('axios');
 
 const sendOTPEmail = async(toEmail, otp) => {
-    const mailOptions = {
-        from: 'pandaysushmitpanday@gmail.com',
-        to: toEmail,
+    const url = 'https://api.brevo.com/v3/smtp/email';
+
+    const data = {
+        sender: { email: 'pandaysushmitpanday@gmail.com', name: 'Sushmit Pandey' },
+        to: [{ email: toEmail }],
         subject: 'OTP Verification',
-        text: `आपका OTP है: ${otp}`
+        textContent: `आपका OTP है: ${otp}`
     };
 
     try {
-        const info = await transporter.sendMail(mailOptions);
-        return { success: true, info };
+        const response = await axios.post(url, data, {
+            headers: {
+                'api-key': process.env.BREVO_API_KEY,
+                'content-type': 'application/json'
+            }
+        });
+        return { success: true, response: response.data };
     } catch (error) {
-        console.error("Nodemailer Error:", error);
+        // यहाँ हमने Optional Chaining (?.) हटा दी है और इसे सुरक्षित कर दिया है
+        const errorMessage = (error.response && error.response.data) ? error.response.data : error.message;
+        console.error("Brevo API Error:", errorMessage);
         throw error;
     }
 };

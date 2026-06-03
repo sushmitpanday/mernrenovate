@@ -2,7 +2,7 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', // service: 'gmail' की जगह यह बेहतर है
+    host: 'smtp-relay.brevo.com', // service: 'gmail' की जगह यह बेहतर है
     port: 587, // 587 पोर्ट रेंडर के लिए बेस्ट है
     secure: false, // 587 के लिए false जरूरी है
     auth: {
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 const sendOTPEmail = async(toEmail, otp) => {
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: 'pandaysushmitpanday@gmail.com',
         to: toEmail,
         subject: 'OTP Verification',
         text: `आपका OTP है: ${otp}`

@@ -76,7 +76,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-wrap justify-center gap-4 text-xs opacity-60">
-            <span>© 2026 SilverBricks Pty Ltd</span>
+            <span>© 2026 SilverBricks Pvt Ltd</span>
             <span>•</span>
             <span>ABN 12 345 678 901</span>
             <span>•</span>

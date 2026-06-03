@@ -11,7 +11,7 @@ export default function Header() {
 
   const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
-    : "https://mernrenovate-17.onrender.com";
+    : "https://mernrenovate-18.onrender.com";
 
   useEffect(() => {
     const checkAuth = async () => {

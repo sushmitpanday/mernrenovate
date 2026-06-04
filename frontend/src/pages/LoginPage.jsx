@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import imageone from '../assets/image copy.png'
+
 
 const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
@@ -56,7 +58,7 @@ const LoginPage = () => {
                 
                 {/* Image Section - Padding hatayi */}
                 <div className="w-full md:w-1/2 h-64 md:h-auto bg-orange-100 flex items-center justify-center">
-                    <img src="../../public/image copy.png" alt="Auth" className="h-full w-full object-cover" />
+                    <img src={imageone} alt="Auth" className="h-full w-full object-cover" />
                 </div>
 
                 {/* Form Section */}

@@ -40,18 +40,24 @@ const CustomerDashboard = () => {
                         <p className="text-sm mt-1">Go to the homepage and post a task to get started.</p>
                     </div>
                 ) : (
-                    jobs.map((job) => (
-                        <div key={job._id} className="border p-5 mb-4 shadow-sm rounded-xl bg-white">
-                            <h3 className="font-bold text-lg capitalize text-orange-600">{job.service}</h3>
-                            <div className="mt-3 space-y-1 text-sm text-gray-700">
-                                {job.area && <p><span className="font-semibold">Area:</span> {job.area}</p>}
-                                {job.description && <p><span className="font-semibold">Description:</span> {job.description}</p>}
-                                {job.startDate && <p><span className="font-semibold">Start Date:</span> {job.startDate}</p>}
-                                {job.cleaningType && <p><span className="font-semibold">Cleaning Type:</span> {job.cleaningType}</p>}
-                                {job.bedrooms && <p><span className="font-semibold">Bedrooms:</span> {job.bedrooms}</p>}
+                    jobs.map((job) => {
+                        const serviceLabel = job.service
+                            ? job.service.charAt(0).toUpperCase() + job.service.slice(1)
+                            : "Job Request";
+                        return (
+                            <div key={job._id} className="border p-5 mb-4 shadow-sm rounded-xl bg-white">
+                                <h3 className="font-bold text-lg text-orange-600">{serviceLabel}</h3>
+                                <div className="mt-3 space-y-1.5 text-sm text-gray-700">
+                                    {job.area && <p><span className="font-semibold">Area:</span> {job.area}</p>}
+                                    {job.service && <p><span className="font-semibold">Service:</span> {serviceLabel}</p>}
+                                    {job.startDate && <p><span className="font-semibold">Start:</span> {job.startDate}</p>}
+                                    {job.cleaningType && <p><span className="font-semibold">Cleaning Type:</span> {job.cleaningType}</p>}
+                                    {job.bedrooms && <p><span className="font-semibold">Bedrooms:</span> {job.bedrooms}</p>}
+                                    {job.description && <p><span className="font-semibold">Description:</span> {job.description}</p>}
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
         </div>

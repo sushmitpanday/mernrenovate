@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import imageone from '../assets/image copy.png'
+import imageone from '../assets/image copy.png';
+import { syncPendingJobToServer } from '../utils/pendingJobSync';
 
 
 const API_BASE_URL = window.location.hostname === "localhost" 
@@ -36,19 +37,34 @@ const LoginPage = () => {
         if (value && index < 5) document.getElementById(`otp-${index + 1}`).focus();
     };
 
-    const handleVerify = async () => {
-        setLoading(true);
-        try {
-            const finalOtp = otp.join('');
-            const res = await api.post('/api/verify-otp', { email, otp: finalOtp });
-            if (res.data.isNewUser) navigate('/register-details', { state: { email } });
-            else {
-                localStorage.setItem('user', JSON.stringify(res.data.user));
-                navigate(`/dashboard/${res.data.user.role}`);
+const handleVerify = async () => {
+    setLoading(true);
+    try {
+        const finalOtp = otp.join('');
+        const res = await api.post('/api/verify-otp', { email, otp: finalOtp });
+        
+        if (res.data.isNewUser) {
+            navigate('/register-details', { state: { email } });
+        } else {
+            // 1. टोकन और यूजर सेव करो
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.user));
+            
+            try {
+                await syncPendingJobToServer(res.data.token);
+            } catch (err) {
+                console.error("Failed to sync pending job:", err);
             }
-        } catch (err) { alert("Invalid OTP!"); }
-        finally { setLoading(false); }
-    };
+            
+            // 3. नेविगेट करो
+            navigate(`/dashboard/${res.data.user.role}`);
+        }
+    } catch (err) { 
+        console.error(err);
+        alert("Invalid OTP!"); 
+    }
+    finally { setLoading(false); }
+};
 
     return (
         // p-2 yahan padding kam ki hai mobile ke liye

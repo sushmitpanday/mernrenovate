@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { syncPendingJobToServer } from '../utils/pendingJobSync';
 
 const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
@@ -45,16 +46,10 @@ const RegisterDetails = () => {
                 localStorage.setItem('user', JSON.stringify(res.data.user));
 
                 if (role === 'customer') {
-                    const pendingJob = localStorage.getItem('pendingJob');
-                    if (pendingJob) {
-                        try {
-                            await api.post('/api/customer/create', JSON.parse(pendingJob), {
-                                headers: { Authorization: `Bearer ${res.data.token}` }
-                            });
-                            localStorage.removeItem('pendingJob');
-                        } catch (err) {
-                            console.error('Failed to sync pending job:', err);
-                        }
+                    try {
+                        await syncPendingJobToServer(res.data.token);
+                    } catch (err) {
+                        console.error('Failed to sync pending job:', err);
                     }
                 }
 

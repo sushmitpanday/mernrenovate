@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { savePendingJobData, clearPendingJobData } from "../utils/pendingJobSync";
+
+const API_BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:5000"
+  : "https://mernrenovate-19.onrender.com";
 
 export default function QuickJobFlow() {
   const navigate = useNavigate();
@@ -23,24 +29,28 @@ export default function QuickJobFlow() {
     }
   }, [initialArea, navigate]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < 4) {
       setStep(step + 1);
-    } else {
-      // ✅ FINAL SUBMIT LOGIC
-      // 1. Details ko localStorage mein save karo taaki login ke baad use kar saken
-      localStorage.setItem("pendingBooking", JSON.stringify(formData));
-      
-      // 2. Check karo ki user logged in hai ya nahi
-      const token = localStorage.getItem("token");
+      return;
+    }
 
-      if (!token) {
-        // Agar token nahi hai, to login page par bhejo
-        navigate("/login");
-      } else {
-        // Agar pehle se login hai, to direct success/payment par jao
-        navigate("/dashboard/customer"); 
-      }
+    savePendingJobData(formData);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      await axios.post(`${API_BASE_URL}/api/customer/create`, formData, {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
+      });
+      clearPendingJobData();
+      navigate("/dashboard/customer");
+    } catch (err) {
+      alert("Error saving job: " + (err.response?.data?.error || err.message));
     }
   };
 

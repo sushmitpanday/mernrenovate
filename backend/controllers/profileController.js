@@ -1,4 +1,8 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+
+const generateToken = (userId) =>
+    jwt.sign({ id: userId }, process.env.JWT_SECRET || 'SECRET', { expiresIn: '7d' });
 
 exports.completeProfile = async(req, res) => {
     try {
@@ -17,7 +21,8 @@ exports.completeProfile = async(req, res) => {
             isProfileCompleted: true
         }, { new: true });
 
-        res.status(200).json({ success: true, user: updatedUser });
+        const token = generateToken(updatedUser._id);
+        res.status(200).json({ success: true, user: updatedUser, token });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

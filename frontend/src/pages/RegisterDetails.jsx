@@ -41,8 +41,23 @@ const RegisterDetails = () => {
             
             // Success hone par localStorage set karein
             if (res.data.success) {
+                localStorage.setItem('token', res.data.token);
                 localStorage.setItem('user', JSON.stringify(res.data.user));
-                // Redirect karein
+
+                if (role === 'customer') {
+                    const pendingJob = localStorage.getItem('pendingJob');
+                    if (pendingJob) {
+                        try {
+                            await api.post('/api/customer/create', JSON.parse(pendingJob), {
+                                headers: { Authorization: `Bearer ${res.data.token}` }
+                            });
+                            localStorage.removeItem('pendingJob');
+                        } catch (err) {
+                            console.error('Failed to sync pending job:', err);
+                        }
+                    }
+                }
+
                 navigate(`/dashboard/${role}`, { replace: true });
             }
         } catch (err) { 

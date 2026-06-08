@@ -1,6 +1,10 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const OTP = require('../models/otp');
 const { sendOTPEmail } = require('../utils/emailService');
+
+const generateToken = (userId) =>
+    jwt.sign({ id: userId }, process.env.JWT_SECRET || 'SECRET', { expiresIn: '7d' });
 
 exports.sendOTP = async(req, res) => {
     try {
@@ -46,8 +50,8 @@ exports.verifyOTP = async(req, res) => {
             return res.status(200).json({ success: true, isNewUser: true, message: "Complete profile" });
         }
 
-        // Agar user exist karta hai aur profile complete hai
-        return res.status(200).json({ success: true, isNewUser: false, user, message: "Login successful" });
+        const token = generateToken(user._id);
+        return res.status(200).json({ success: true, isNewUser: false, user, token, message: "Login successful" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import imageone from '../assets/image copy.png';
 import { syncPendingJobToServer } from '../utils/pendingJobSync';
 
@@ -17,6 +17,8 @@ const LoginPage = () => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    const redirectTo = location.state?.redirectTo;
 
     const sendOTP = async () => {
         if (!email) return alert("Please enter email");
@@ -44,11 +46,11 @@ const handleVerify = async () => {
         const res = await api.post('/api/verify-otp', { email, otp: finalOtp });
         
         if (res.data.isNewUser) {
-            navigate('/register-details', { state: { email } });
+            navigate('/register-details', { state: { email, redirectTo } });
         } else {
-            // 1. टोकन और यूजर सेव करो
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('user', JSON.stringify(res.data.user));
+            localStorage.removeItem('providerId');
             
             try {
                 await syncPendingJobToServer(res.data.token);
@@ -56,8 +58,7 @@ const handleVerify = async () => {
                 console.error("Failed to sync pending job:", err);
             }
             
-            // 3. नेविगेट करो
-            navigate(`/dashboard/${res.data.user.role}`);
+            navigate(redirectTo || `/dashboard/${res.data.user.role}`);
         }
     } catch (err) { 
         console.error(err);

@@ -12,6 +12,7 @@ const api = axios.create({ baseURL: API_BASE_URL });
 const RegisterDetails = () => {
     const location = useLocation();
     const email = location.state?.email || ''; 
+    const redirectTo = location.state?.redirectTo;
     const navigate = useNavigate();
 
     // 1. Loading state add kiya taaki redirect control kar sakein
@@ -53,7 +54,7 @@ const RegisterDetails = () => {
                     }
                 }
 
-                navigate(`/dashboard/${role}`, { replace: true });
+                navigate(redirectTo || `/dashboard/${role}`, { replace: true });
             }
         } catch (err) { 
             console.error(err);

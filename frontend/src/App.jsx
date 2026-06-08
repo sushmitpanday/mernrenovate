@@ -1,33 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Layout & Components
 import TopHeader from './components/TopHeader';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import CategorySection from './components/AboutUs';
-import Jobs from './components/Jobs';
 import Footer from './components/Footer';
+import Hero from './components/Hero';
+import Jobs from './components/Jobs';
+import AboutUs from './components/AboutUs';
+
+// Pages
+import LoginPage from './pages/LoginPage';
+import RegisterDetails from './pages/RegisterDetails';
 import GetStarted from './pages/GetStarted';
 import QuickJobFlow from './pages/QuickJobFlow';
-import BusinessDashboard from './pages/BuisnessDashboard';
 import CustomerDashboard from './pages/CustomerDashboard';
+import ProviderRegistration from './pages/ProviderRegistration';
 import TradieDashboard from './pages/TradieDashboard';
-import LoginPage from './pages/LoginPage';
-import RegisterDetails from './pages/RegisterDetails'; // Naya import
+import ProviderProfile from './pages/ProviderProfile';
 
-// Protected Route Component
-const ProtectedRoute = ({ children, allowedRole }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
-  
-  if (allowedRole && user.role !== allowedRole) {
-    return <Navigate to="/" />;
-  }
-  
-  return children;
-};
 
 // Main Layout Wrapper
 function MainLayout({ children }) {
@@ -47,12 +38,11 @@ function Home() {
     <>
       <Hero />
       <Jobs />
-      <CategorySection />
+      <AboutUs />
     </>
   );
 }
 
-// Main App Component
 function App() {
   return (
     <Router>
@@ -60,30 +50,15 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register-details" element={<RegisterDetails />} /> {/* Naya Route */}
+         <Route path="/register-details" element={<RegisterDetails />} />
         <Route path="/get-started" element={<GetStarted />} />
-        <Route path="/quick-start" element={<QuickJobFlow />} />
-
-
-
-        {/* Protected Dashboard Routes */}
-        <Route path="/dashboard/owner" element={
-          <ProtectedRoute allowedRole="owner">
-            <MainLayout><BusinessDashboard /></MainLayout>
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/dashboard/customer" element={
-          <ProtectedRoute allowedRole="customer">
-            <MainLayout><CustomerDashboard /></MainLayout>
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/dashboard/tradie" element={
-          <ProtectedRoute allowedRole="tradie">
-            <MainLayout><TradieDashboard /></MainLayout>
-          </ProtectedRoute>
-        } />
+                <Route path="/quick-start" element={<QuickJobFlow />} />
+          <Route path="/dashboard/customer" element={<CustomerDashboard />} />
+        {/* Provider Routes */}
+        <Route path="/register-provider" element={<MainLayout><ProviderRegistration /></MainLayout>} />
+        <Route path="/dashboard/tradie" element={<MainLayout><TradieDashboard /></MainLayout>} />
+        <Route path="/my-profile" element={<MainLayout><ProviderProfile /></MainLayout>} />
+        <Route path="/my-profile/:id" element={<MainLayout><ProviderProfile /></MainLayout>} />
       </Routes>
     </Router>
   );

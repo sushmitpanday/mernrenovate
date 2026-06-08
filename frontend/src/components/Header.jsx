@@ -46,10 +46,18 @@ export default function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("providerId");
     setUser(null);
     setIsSidebarOpen(false);
     window.dispatchEvent(new Event("auth-changed"));
     navigate("/");
+  };
+
+  const goToTradieDashboard = () => {
+    const token = localStorage.getItem("token");
+    if (token) navigate("/dashboard/tradie");
+    else navigate("/login", { state: { redirectTo: "/dashboard/tradie" } });
   };
 
   const leftLinks = [
@@ -97,21 +105,36 @@ export default function Header() {
 
           {/* RIGHT: Actions */}
           <div className="flex flex-wrap items-center justify-end gap-1.5 sm:gap-4 ml-auto">
-            <Link to={"/login"} className="text-[10px] sm:text-sm font-medium text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap">
+            <button
+              type="button"
+              onClick={goToTradieDashboard}
+              className="text-[10px] sm:text-sm font-medium text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap"
+            >
               Become provider
-            </Link>
+            </button>
             
             {!user ? (
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-4">
-                <Link to="/login" className="text-[10px] sm:text-sm font-bold bg-orange-500 text-white px-2 py-1.5 sm:px-4 rounded-lg hover:bg-orange-600 transition-colors shadow-sm whitespace-nowrap">
+                <button
+                  type="button"
+                  onClick={goToTradieDashboard}
+                  className="text-[10px] sm:text-sm font-bold bg-orange-500 text-white px-2 py-1.5 sm:px-4 rounded-lg hover:bg-orange-600 transition-colors shadow-sm whitespace-nowrap"
+                >
                   List your business
-                </Link>
+                </button>
                 <Link to="/login" className="text-[10px] sm:text-sm font-medium text-orange-500 border border-orange-500 px-1.5 py-1 sm:px-3 rounded-lg hover:bg-orange-50 transition-colors whitespace-nowrap">
                   Login
                 </Link>
               </div>
             ) : (
               <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={goToTradieDashboard}
+                  className="text-[10px] sm:text-sm font-medium text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap"
+                >
+                  Tradie Dashboard
+                </button>
                 <Link to="/dashboard/customer" className="flex items-center gap-1 text-sm font-semibold text-[#0f172a] hover:text-orange-500 transition-colors">
                   <FaUserCircle size={18} className="text-orange-500" />
                   <span>Dashboard</span>

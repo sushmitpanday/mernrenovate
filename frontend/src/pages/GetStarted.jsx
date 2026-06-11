@@ -5,7 +5,7 @@ import SearchBox from '../components/SearchBox';
 
 const API_BASE_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
-    : "https://mernrenovate-19.onrender.com";
+    : "https://mernrenovate-21.onrender.com";
 
 export default function GetStarted() {
   const navigate = useNavigate();

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react"; 
-import SearchBox from '../components/SearchBox'; // Sirf ye add kiya
+import SearchBox from '../components/SearchBox'; 
+import axios from 'axios';// Sirf ye add kiya
 
 export default function Hero() {
   const [showWizard, setShowWizard] = useState(false);
@@ -9,6 +10,24 @@ export default function Hero() {
   const [formData, setFormData] = useState({ area: "", service: "", description: "" });
   const [activeTab, setActiveTab] = useState("work"); 
   const navigate = useNavigate();
+
+   const API_BASE_URL =
+    window.location.hostname === "localhost"
+      ? "http://localhost:5000"
+      : "https://mernrenovate-21.onrender.com";
+
+useEffect(() => {
+  axios.get(
+    `${API_BASE_URL}/api/customer/jobs`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    }
+  )
+  .then((res) => console.log(res.data))
+  .catch((err) => console.error(err));
+}, []);
 
   const handleNext = () => {
     if (step === 1 && formData.area) setStep(2);

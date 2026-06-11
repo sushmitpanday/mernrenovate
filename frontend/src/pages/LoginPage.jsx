@@ -7,7 +7,7 @@ import { syncPendingJobToServer } from '../utils/pendingJobSync';
 
 const API_BASE_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5000" 
-    : "https://mernrenovate-19.onrender.com";
+    : "https://mernrenovate-21.onrender.com";
 
 const api = axios.create({ baseURL: API_BASE_URL });
 

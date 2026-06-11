@@ -57,7 +57,7 @@ export default function Hero() {
               className="flex-1 bg-transparent px-3 text-sm text-gray-700 outline-none placeholder-gray-400 cursor-pointer"
             />
             <button 
-              onClick={() => navigate("/get-started")}
+              onClick={() => navigate("/post-job")}
               className="flex items-center gap-2 bg-gradient-to-r from-[#F97316] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 tracking-wide whitespace-nowrap"
             >
               <Search size={16} className="stroke-[3]" />

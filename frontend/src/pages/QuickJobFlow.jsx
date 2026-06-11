@@ -44,6 +44,7 @@ export default function QuickJobFlow() {
     }
 
     try {
+      console.log("Submitting FormData:", formData);
       await axios.post(`${API_BASE_URL}/api/customer/create`, formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
       });

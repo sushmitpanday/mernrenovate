@@ -18,6 +18,7 @@ import CustomerDashboard from './pages/CustomerDashboard';
 import ProviderRegistration from './pages/ProviderRegistration';
 import TradieDashboard from './pages/TradieDashboard';
 import ProviderProfile from './pages/ProviderProfile';
+import PostJob from './pages/PostJob'
 
 
 // Main Layout Wrapper
@@ -54,6 +55,7 @@ function App() {
         <Route path="/get-started" element={<GetStarted />} />
                 <Route path="/quick-start" element={<QuickJobFlow />} />
           <Route path="/dashboard/customer" element={<CustomerDashboard />} />
+          <Route path="/post-job" element={<PostJob />} />
         {/* Provider Routes */}
         <Route path="/register-provider" element={<MainLayout><ProviderRegistration /></MainLayout>} />
         <Route path="/dashboard/tradie" element={<MainLayout><TradieDashboard /></MainLayout>} />

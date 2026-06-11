@@ -6,6 +6,7 @@ const path = require("path");
 const connectDB = require("./config/db");
 const personalDocRoutes = require("./routes/personaldocument");
 const updateProfileRoutes = require("./routes/profileRoutes");
+const customerRoutes = require("./routes/customerRoutes");
 
 const app = express();
 
@@ -30,7 +31,10 @@ connectDB();
 
 // 4. Routes & Static Files
 const userRoutes = require("./routes/userRoutes");
+const providerRoutes = require("./routes/providerRoutes");
 app.use("/api", userRoutes);
+app.use("/api/provider", providerRoutes);
+app.use("/api/customer", customerRoutes);
 app.use("/api/profile", personalDocRoutes);
 app.use("/api/update", updateProfileRoutes);
 app.use('/uploads', express.static('uploads'));

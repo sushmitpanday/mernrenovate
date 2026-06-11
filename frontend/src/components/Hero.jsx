@@ -76,7 +76,7 @@ export default function Hero() {
 
             {activeTab === "work" ? (
               <div className="space-y-4">
-                <button onClick={() => setShowWizard(true)} className="w-full flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-lg transition-all duration-300 text-left group">
+                <button onClick={() => navigate("/post-job")} className="w-full flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-lg transition-all duration-300 text-left group">
                   <div className="flex items-center gap-4"><div className="bg-slate-900 text-white p-3 rounded-xl group-hover:bg-[#F97316] transition-colors"><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg></div><div><h4 className="font-bold text-gray-900 text-sm sm:text-base">Post a Job / Task</h4><p className="text-gray-400 text-xs mt-0.5">Describe what you need and receive free quotes.</p></div></div>
                   <span className="text-gray-300 group-hover:text-orange-500 font-bold transition-colors text-lg">➔</span>
                 </button>

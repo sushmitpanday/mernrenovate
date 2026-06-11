@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:5000'
-    : 'https://mernrenovate-19.onrender.com';
+const API_BASE_URL = window.location.hostname === 'localhost' ?
+    'http://localhost:5000' :
+    'https://mernrenovate-19.onrender.com';
 
 export function getPendingJobData() {
     const raw = localStorage.getItem('pendingJob') || localStorage.getItem('pendingBooking');
@@ -25,9 +25,17 @@ export function clearPendingJobData() {
 
 export async function syncPendingJobToServer(token) {
     const jobData = getPendingJobData();
+    console.log("Pending Job Data:", jobData);
+
     if (!jobData || !token) return;
-    await axios.post(`${API_BASE_URL}/api/customer/create`, jobData, {
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-    });
+
+    await axios.post(
+        `${API_BASE_URL}/api/customer/create`,
+        jobData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
     clearPendingJobData();
 }

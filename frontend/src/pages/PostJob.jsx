@@ -35,6 +35,8 @@ export default function PostJob() {
   };
   const handleSubmit = async (e) => {
   e.preventDefault();
+    console.log("FORMDATA:", formData);
+    console.log("TOKEN:", localStorage.getItem("token"));
 
   const token = localStorage.getItem("token");
 
@@ -61,10 +63,13 @@ export default function PostJob() {
 
     alert("Job posted successfully!");
   } catch (err) {
-    console.error(err);
+  console.log("STATUS:", err.response?.status);
+  console.log("ERROR:", err.response?.data);
     alert("Failed to post job");
   }
 };
+
+
 
 
 

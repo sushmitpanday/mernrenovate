@@ -16,18 +16,18 @@ export default function Hero() {
       ? "http://localhost:5000"
       : "https://mernrenovate-21.onrender.com";
 
-useEffect(() => {
-  axios.get(
-    `${API_BASE_URL}/api/customer/jobs`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
-    }
-  )
-  .then((res) => console.log(res.data))
-  .catch((err) => console.error(err));
-}, []);
+// useEffect(() => {
+//   axios.get(
+//     `${API_BASE_URL}/api/customer/jobs`,
+//     {
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem("token")}`
+//       }
+//     }
+//   )
+//   .then((res) => console.log(res.data))
+//   .catch((err) => console.error(err));
+// }, []);
 
   const handleNext = () => {
     if (step === 1 && formData.area) setStep(2);

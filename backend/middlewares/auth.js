@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
+
     const authHeader = req.header('Authorization');
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -14,6 +15,7 @@ module.exports = (req, res, next) => {
             token,
             process.env.JWT_SECRET || 'SECRET'
         );
+        console.log("TOKEN:", decoded);
 
         req.user = decoded;
         next();

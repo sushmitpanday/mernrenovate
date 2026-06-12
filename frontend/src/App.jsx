@@ -19,6 +19,7 @@ import ProviderRegistration from './pages/ProviderRegistration';
 import TradieDashboard from './pages/TradieDashboard';
 import ProviderProfile from './pages/ProviderProfile';
 import PostJob from './pages/PostJob'
+import HireTrade from './pages/HireTrade';
 
 
 // Main Layout Wrapper
@@ -56,6 +57,7 @@ function App() {
                 <Route path="/quick-start" element={<QuickJobFlow />} />
           <Route path="/dashboard/customer" element={<CustomerDashboard />} />
           <Route path="/post-job" element={<PostJob />} />
+          <Route path="/hire-trade" element={<HireTrade />} />
         {/* Provider Routes */}
         <Route path="/register-provider" element={<MainLayout><ProviderRegistration /></MainLayout>} />
         <Route path="/dashboard/tradie" element={<MainLayout><TradieDashboard /></MainLayout>} />
